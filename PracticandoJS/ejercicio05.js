@@ -16,7 +16,7 @@ const listaNueva = document.createElement("ul");
 contenedorEj5.appendChild(listaNueva);
 
 // funcion de agregar 
-function botonAgregaro(){
+function botonAgregar(){
 	cantidadElementos++;
 	const elementoNuevo = document.createElement("li");
 	elementoNuevo.textContent = "Elemento "+cantidadElementos;
@@ -27,11 +27,11 @@ function botonAgregaro(){
 // accion del boton de agregar
 contenedorEj5.appendChild(botonAgregar);
 botonAgregar.textContent = "Agregar elemento";
-botonAgregar.addEventListener("click", botonAgregaro);
+botonAgregar.addEventListener("click", botonAgregar);
 
 const aviso = document.createElement("p");
 // funcion de eliminar
-function botonEliminaro(){
+function botonEliminar(){
 	if (cantidadElementos===0){
 		aviso.textContent = "La lista está vacía. No hay elementos para eliminar.";
 		contenedorEj5.appendChild(aviso);
@@ -44,4 +44,4 @@ function botonEliminaro(){
 // accion del boton de eliminar
 contenedorEj5.appendChild(botonEliminar);
 botonEliminar.textContent = "Eliminar último elemento";
-botonEliminar.addEventListener("click", botonEliminaro);
+botonEliminar.addEventListener("click", botonEliminar);
