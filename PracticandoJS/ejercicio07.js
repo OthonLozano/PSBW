@@ -1,5 +1,5 @@
 // crear un arreglo de objetos
-const arregloTecnologiasEj07 = [
+let arregloTecnologiasEj07 = [
 	{nombre: "HTML 5", descripcion: "Define la estructura básica y el contenido de las páginas web mediante el uso de etiquetas", tipo: "Lenguaje de marcado"},
 	{nombre: "CSS 3", descripcion: "Se encarga del diseño visual, colores, fuentes y la disposición (layout) de los elementos en la página", tipo: "Lenguaje de hojas de estilo"},
 ];
