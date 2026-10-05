@@ -131,3 +131,174 @@ Sí, ya que son fundamentos de programación.
 - `cantidadElementos++` y `--`: mantienen el número igual a la cantidad real; si agrego 3, elimino 1 y agrego otro, el nuevo es "Elemento 3".
 - `listaNueva.lastElementChild.remove()`: elimina el último `<li>`; `lastElementChild` vale `null` si no hay ninguno.
 - `if (cantidadElementos === 0)`: evita aplicar `remove()` sobre `null`, que causaría un `TypeError`.
+
+> **BORRADOR (elimina esta nota al entregar).** Pega estas secciones al final de tu `README.md`, después del ejercicio 5. Completa los bloques **[COMPLETA]**, confirma los **[VERIFICA]** con tu código final y reescribe con tus palabras lo que no suene natural en ti.
+
+---
+
+## Ejercicio 6: Eventos e interacción
+
+**1. ¿Qué hace este ejercicio?**
+Crea con JavaScript una sección "Panel interactivo" con tres botones, cada uno con una acción distinta: uno oculta y muestra un párrafo, otro cambia el texto del subtítulo y otro cambia el color de fondo del título. Además, un elemento responde a un evento distinto de `click`.
+
+**2. ¿Qué conceptos utilicé?**
+`createElement`, `addEventListener`, evento `click` y el evento adicional `mouseenter` y `mouseleave`, `style` (`display` y `backgroundColor`), `textContent`, `querySelector`, funciones y `if / else`.
+
+**3. ¿Ya conocía estos conceptos?**
+Algunas cosas como la parte de la selección de elementos con `querySelector`, el contenido de las etiquetas, la lógica de como funciona un `if / else`.
+
+**4. ¿Tuve dificultades?**
+- Al probar un ejemplo en la misma página que otro apareció `Identifier 'panelD' has already been declared`. Dos scripts de una misma página comparten los nombres globales, por lo que cada `const` necesita un nombre único. Desde entonces uso sufijos como `Ej6`.
+
+
+**5. ¿Utilicé Inteligencia Artificial?** Sí.
+- **Problema:** crear un panel con botones que modifiquen la página y manejar otro tipo de evento.
+- **Qué pregunté:** cómo funcionan los eventos y un ejemplo con otros elementos; después pedí revisar mi código.
+- **Qué usé:** la estructura de un panel con tres botones, cada uno con su función (los nombres `cambiarMensaje` y `cambiarColor` vienen del ejemplo), y la idea de alternar mostrar y ocultar. Los elementos que modifica y los textos son míos.
+- `boton.addEventListener("click", funcion)`: el botón escucha el evento `click` y ejecuta `funcion`; va sin paréntesis porque se pasa como referencia y no debe ejecutarse al cargar la página.
+- `style.display = "none"` y `style.display = ""`: la primera oculta el elemento y la segunda quita el valor en línea, con lo que vuelve a verse. Se compara con `"none"` porque al inicio el valor en línea es `""`.
+- `textContent` y `style.backgroundColor`: cambian el texto y el color de fondo de un elemento existente.
+
+---
+
+## Ejercicio 7: Formulario dinámico
+
+**1. ¿Qué hace este ejercicio?**
+Crea con JavaScript un formulario con nombre, descripción y tipo, y un botón "Agregar tecnología". Al enviarlo, comprueba que ningún campo esté vacío; si falta alguno, muestra un mensaje en la página. Si todo es válido, agrega la tecnología al arreglo y dibuja su tarjeta sin recargar la página. Por indicación de la docente, este ejercicio usa su propio arreglo y no depende del ejercicio 3.
+
+**2. ¿Qué conceptos utilicé?**
+Creación de elementos de formulario, evento `submit`, `preventDefault`, `value`, `trim`, operador `||`, `return`, `push`, `reset` y funciones con parámetro y valor de retorno.
+
+**3. ¿Ya conocía estos conceptos?**
+Sí, ya que fue una practica integradora donde se ponian en marcha los elementos que ya habiamos ocupado en los otros ejercicios.
+
+**4. ¿Tuve dificultades?**
+- Mi primera versión no tenía botón de envío. Con tres campos de texto y sin botón `submit`, el formulario no se puede enviar ni con Enter.
+- Había creado el mensaje de error pero no lo había insertado en el `body`, por lo que nunca se veía. Un elemento creado solo aparece cuando se inserta en el DOM.
+- Volví a declarar `const arregloTecnologias`, que ya existía en el ejercicio 3, y aparecía `SyntaxError`. Lo resolví dando un nombre distinto a mi arreglo.
+
+**5. ¿Utilicé Inteligencia Artificial?** Sí.
+- **Problema:** validar un formulario y agregar una tarjeta nueva sin recargar.
+- **Qué pregunté:** cómo crear un formulario con JavaScript y validarlo, con un ejemplo de otro tema (libros); después pedí revisar mi código.
+- **Qué usé:** la estructura del manejador de `submit` y de la función que crea una tarjeta (`dibujarTarjeta` equivale a la del ejemplo). Los datos, los textos y el formulario son míos.
+- `e.preventDefault()`: cancela el envío normal del formulario, que recargaría la página y haría perder lo agregado.
+- `campo.value.trim()`: obtiene el texto escrito sin espacios al inicio y al final, así un campo con solo espacios cuenta como vacío.
+- `nombre === "" || descripcion === "" || tipo === ""`: es verdadero si al menos un campo está vacío.
+- `arreglo.push(objeto)`: agrega la tecnología al final del arreglo, aunque este sea `const`, porque no se reasigna.
+- `formulario.reset()`: vacía los campos después de agregar.
+
+---
+
+## Ejercicio 8: Buscar y filtrar información
+
+**1. ¿Qué hace este ejercicio?**
+Agrega un campo "Buscar tecnología". Mientras el usuario escribe, se muestran solo las tecnologías cuyo nombre contiene el texto escrito, sin distinguir mayúsculas. Si no hay coincidencias, aparece un mensaje; si el campo queda vacío, vuelven a verse todas. Depende del ejercicio 7, porque usa su arreglo, su contenedor de tarjetas y su función `dibujarTarjeta`.
+
+**2. ¿Qué conceptos utilicé?**
+Evento `input`, `value`, `trim`, `toLowerCase`, `includes`, ciclo `for`, arreglos y construcción de un arreglo nuevo con `push`, y reconstrucción de la interfaz con `textContent = ""`.
+
+**3. ¿Ya conocía estos conceptos?**
+La mayoría de los conceptos ya los conocía, solo que me fallo la lógica de como utilizar o actualizar el arreglo desde JS y como reconstruir la interfaz.
+
+**4. ¿Tuve dificultades?**
+- Pensé que `dibujarTarjeta` recibía un arreglo y mostraba las tarjetas. Recibe **un** objeto y **devuelve** una tarjeta, pero no la inserta; por eso tuve que vaciar el contenedor y, por cada coincidencia, insertar lo que devuelve.
+- Asigné `label.text` en lugar de `label.textContent`, y la etiqueta quedó vacía; JavaScript no avisó porque simplemente creó una propiedad nueva.
+- Al principio no entendía si debía leer el arreglo o el `div` del ejercicio 7. Debe leerse el arreglo, que contiene los datos; el `div` solo muestra el resultado.
+
+**5. ¿Utilicé Inteligencia Artificial?** Sí.
+- **Problema:** mostrar solo las tecnologías que coinciden con lo escrito.
+- **Qué pregunté:** cómo filtrar mientras se escribe, con un ejemplo de otro tema (frutas), y cómo conectar el ejercicio 8 con los datos del 7.
+- **Qué usé:** la estructura de la función de búsqueda (leer el texto, recorrer el arreglo, guardar coincidencias y volver a dibujar), que adapté a mis elementos. La corrección de dibujar con un ciclo vino de una revisión de mi código.
+- `inputBusqueda.addEventListener("input", ...)`: ejecuta la búsqueda cada vez que cambia el contenido del campo, a diferencia de `change`, que espera a que el campo pierda el foco.
+- `nombre.toLowerCase().includes(texto)`: pasa ambos textos a minúsculas y comprueba si el nombre contiene el fragmento escrito en cualquier posición. Con el campo vacío siempre es verdadero, por lo que se muestran todas.
+- `coincidencias.push(...)`: construye un arreglo nuevo sin modificar el original.
+- `contenedor.textContent = ""`: elimina todas las tarjetas anteriores antes de volver a dibujar.
+
+---
+
+## Ejercicio 9: Estado y LocalStorage
+
+**1. ¿Qué hace este ejercicio?**
+Guarda las tecnologías en `localStorage`. Al agregar una tecnología actualiza el arreglo, guarda todo el arreglo y dibuja la tarjeta. Al cargar la página consulta si hay datos guardados y, si los hay, los recupera y reconstruye las tarjetas. El botón "Borrar datos guardados" elimina lo almacenado y regresa a las tecnologías iniciales. Es una versión extendida del ejercicio 7 con su propio arreglo.
+
+**2. ¿Qué conceptos utilicé?**
+`localStorage` (`setItem`, `getItem`, `removeItem`), `JSON.stringify` y `JSON.parse`, `let` para poder reasignar el arreglo, `slice` para conservar una copia del estado inicial y comprobación de `null`.
+
+**3. ¿Ya conocía estos conceptos?**
+No, estos conociminetos si fueron nuevo para mi.
+
+**4. ¿Tuve dificultades?**
+- `localStorage` solo guarda texto, por lo que un arreglo de objetos se convierte en `"[object Object]"` si no se usa `JSON`.
+
+**5. ¿Utilicé Inteligencia Artificial?** Sí.
+- **Problema:** conservar las tecnologías al recargar y poder borrarlas.
+- **Qué pregunté:** cómo funciona `localStorage` y un ejemplo con otro tema (tareas).
+- **Qué usé:** el esquema del ejemplo: una clave constante, una copia del estado inicial con `slice`, la lectura al cargar con comprobación de `null`, el guardado al agregar y el borrado que restaura el estado inicial. Lo adapté a mis tecnologías y al formulario del ejercicio 7.
+- `localStorage.getItem(CLAVE)`: devuelve el texto guardado o `null` si no existe; por eso se comprueba antes de convertirlo.
+- `JSON.parse(texto)` y `JSON.stringify(arreglo)`: convierten el texto en arreglo al cargar, y el arreglo en texto al guardar.
+- `localStorage.setItem(CLAVE, texto)`: guarda; `removeItem(CLAVE)`: elimina esa clave.
+- `arreglo.slice()`: devuelve una copia; sin ella, ambas variables apuntarían al mismo arreglo y los cambios alterarían también el estado inicial.
+
+---
+
+## Ejercicio 10: Formularios y AJAX
+
+**1. ¿Qué hace este ejercicio?**
+Crea con JavaScript un formulario para buscar usuarios de GitHub. Al enviarlo, comprueba que el campo no esté vacío, hace una petición con `fetch` a `https://api.github.com/users/USUARIO` y muestra el nombre de usuario, el nombre real (si existe), el avatar, los repositorios públicos, los seguidores, a cuántos sigue y el enlace a su perfil. Los errores (campo vacío, usuario inexistente, límite de consultas, error del servidor o falla de red) se muestran en la página, sin `alert()`. Una nueva búsqueda reemplaza el resultado anterior sin recargar.
+
+**2. ¿Qué conceptos utilicé?**
+`fetch`, `async / await`, `try / catch`, JSON, evento `submit`, `preventDefault`, códigos de estado HTTP (`status` y `ok`), `encodeURIComponent`, DOM, condicionales y funciones.
+
+**3. ¿Ya conocía estos conceptos?**
+No, la verdad no, al día que realicé está práctica, por la profa que nos enseño el día jueves 01 de octubre como funciona un poco el AJAX, entonces fue como relacione ciertos conceptos.
+
+**4. ¿Tuve dificultades?**
+- Mi primera versión escribió mal `encodeURIComponent`. El error se capturó en el `catch` y toda búsqueda mostraba "No se pudo completar la petición". Entendí que un `catch` puede ocultar errores de programación; para descubrirlo conviene mostrar el error con `console.log(error)`.
+-  El nombre `formulario` ya existía en otros ejercicios y provocaba `SyntaxError`; le agregué un sufijo.
+- Distinguir un usuario que no existe de un fallo de la petición (ver la pregunta 12).
+
+**5. ¿Utilicé Inteligencia Artificial?** Sí.
+- **Problema:** hacer una petición a una API, procesar la respuesta y manejar los distintos errores.
+- **Qué pregunté:** una explicación de AJAX con un ejemplo con otra API (JSONPlaceholder) y una propuesta de código para el ejercicio.
+- **Qué usé:** la estructura del código que me proporcionó la IA (las funciones `mostrarMensaje`, `mostrarUsuario` y `buscarUsuario`, y el manejo de los códigos 404, 403 y otros errores). 
+- `fetch(url)`: envía una petición HTTP y devuelve una promesa que se cumple cuando el servidor responde.
+- `await`: espera el resultado antes de continuar; solo funciona dentro de una función `async`.
+- `respuesta.status` y `respuesta.ok`: el código HTTP y un indicador que vale `true` para los códigos 200 a 299.
+- `respuesta.json()`: lee el cuerpo y lo convierte en un objeto de JavaScript.
+- `e.preventDefault()`: evita que el formulario recargue la página.
+- `try / catch`: el `catch` se ejecuta cuando la petición no puede completarse.
+- `encodeURIComponent(usuario)`: codifica caracteres especiales para que no alteren la dirección.
+
+### Preguntas adicionales
+
+**6. ¿Qué entiendo por AJAX?**
+Es una técnica que permite que JavaScript pida o envíe datos a un servidor en segundo plano, sin recargar la página, y use la respuesta para modificar solo una parte del DOM.
+
+**7. ¿Por qué la página no necesita recargarse para obtener nueva información?**
+Porque la petición la hace JavaScript con `fetch` de forma asíncrona: el navegador sigue mostrando la página mientras espera. Cuando llega la respuesta, solo se modifican los elementos necesarios del DOM. Además, `preventDefault()` cancela la recarga que provocaría el envío normal del formulario.
+
+**8. ¿Qué hace `fetch()`?**
+Envía una petición HTTP a la dirección indicada (por defecto, de tipo GET) y devuelve una promesa. La promesa se cumple cuando el servidor contesta, aunque sea con un código de error, y se rechaza únicamente cuando la petición no puede completarse.
+
+**9. ¿Qué representa la respuesta obtenida del servidor?**
+Es un objeto `Response` que representa lo que contestó el servidor: su código de estado (`status`), si fue exitosa (`ok`), los encabezados y el cuerpo sin procesar. Todavía no son los datos del usuario; para obtenerlos hay que leer el cuerpo con `json()`.
+
+**10. ¿Qué es JSON y para qué se utilizó?**
+JSON es un formato de texto para intercambiar datos, con una estructura parecida a los objetos de JavaScript. GitHub envía los datos del usuario en ese formato, y `respuesta.json()` lo convierte en un objeto para acceder a valores como `datos.login` o `datos.followers`.
+
+**11. ¿Qué hace `event.preventDefault()` en el formulario?**
+Cancela el comportamiento por defecto del evento `submit`, que consiste en enviar el formulario y recargar la página. Así JavaScript puede manejar el envío sin que se pierda el estado de la página.
+
+**12. ¿Qué diferencia existe entre un error en la petición y buscar un usuario que no existe?**
+Si el usuario no existe, el servidor sí contesta, con código 404: la petición se completó, `fetch` no lanza ningún error y se detecta revisando `status` u `ok`. Un error en la petición ocurre cuando no se obtiene respuesta (por ejemplo, sin conexión a Internet): `fetch` rechaza la promesa y el programa salta al `catch`.
+
+**13. Recorrido de los datos, paso a paso**
+1. El usuario escribe un nombre y presiona "Buscar usuario"; se dispara el evento `submit`.
+2. Se ejecuta `buscarUsuario`, que llama a `preventDefault()` para evitar la recarga.
+3. Se lee el campo con `value` y se aplica `trim()`. Si está vacío, `mostrarMensaje` muestra el aviso y el proceso termina.
+4. Se muestra "Buscando..." y `fetch` envía la petición a `https://api.github.com/users/` seguido del nombre.
+5. `await` espera la respuesta de GitHub.
+6. Se revisa `status`: con 404 se informa que el usuario no existe; con 403 u otro código de error se muestra el aviso correspondiente; si no hay respuesta, se salta al `catch`.
+7. Si la respuesta es correcta, `respuesta.json()` convierte el cuerpo en un objeto.
+8. `mostrarUsuario` crea la tarjeta con avatar, datos y enlace, vacía la sección de resultado e inserta la tarjeta en el DOM.
+9. El usuario ve la información; si busca otro nombre, el proceso se repite y reemplaza el resultado anterior.
