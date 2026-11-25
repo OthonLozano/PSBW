@@ -132,8 +132,6 @@ Sí, ya que son fundamentos de programación.
 - `listaNueva.lastElementChild.remove()`: elimina el último `<li>`; `lastElementChild` vale `null` si no hay ninguno.
 - `if (cantidadElementos === 0)`: evita aplicar `remove()` sobre `null`, que causaría un `TypeError`.
 
-> **BORRADOR (elimina esta nota al entregar).** Pega estas secciones al final de tu `README.md`, después del ejercicio 5. Completa los bloques **[COMPLETA]**, confirma los **[VERIFICA]** con tu código final y reescribe con tus palabras lo que no suene natural en ti.
-
 ---
 
 ## Ejercicio 6: Eventos e interacción
