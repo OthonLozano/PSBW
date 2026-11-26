@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Resumen from './components/Resumen.jsx'
 import DetalleMaterial from './components/DetalleMaterial.jsx' 
 import Encabezado from './components/Encabezado.jsx'
 import Filtros from './components/Filtros.jsx'
@@ -134,6 +135,7 @@ function App() {
 
         {/* Columna derecha: resumen, filtros y lista */}
         <div className="panel-principal">
+          <Resumen materiales={materiales} materialesFiltrados={materialesFiltrados} />
           <Filtros
             busqueda={busqueda}
             categoriaFiltro={categoriaFiltro}
