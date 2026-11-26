@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import Encabezado from './components/Encabezado.jsx'
+import Filtros from './components/Filtros.jsx'
 import FormularioMaterial from './components/FormularioMaterial.jsx'
 import ListaMateriales from './components/ListaMateriales.jsx'
 import { materialesIniciales } from './data/materiales.js'
-import { describirMaterial, normalizarTexto } from './utils/materiales.js'
+import { describirMaterial, estaDisponible, normalizarTexto } from './utils/materiales.js'
 import './App.css'
 
 function App() {
@@ -12,6 +13,11 @@ function App() {
 
   // Mensaje del formulario: null, o un objeto { tipo: 'error' | 'exito', texto }
   const [mensaje, setMensaje] = useState(null)
+
+  // Valores de los filtros
+  const [busqueda, setBusqueda] = useState('')
+  const [categoriaFiltro, setCategoriaFiltro] = useState('Todas')
+  const [soloDisponibles, setSoloDisponibles] = useState(false)
 
   // Recibe los datos del formulario. Devuelve true si se registró y false si no.
   const manejarRegistro = (datos) => {
@@ -62,6 +68,24 @@ function App() {
     return true
   }
 
+  // Regresa los tres filtros a sus valores iniciales
+  const manejarLimpiarFiltros = () => {
+    setBusqueda('')
+    setCategoriaFiltro('Todas')
+    setSoloDisponibles(false)
+  }
+    // Resultados de los filtros. Se calculan en cada renderizado a partir del arreglo completo.
+  // filter crea un arreglo nuevo, así que materiales nunca se modifica.
+  const textoBusqueda = normalizarTexto(busqueda)
+
+  const materialesFiltrados = materiales.filter((material) => {
+    const coincideNombre = normalizarTexto(material.nombre).includes(textoBusqueda)
+    const coincideCategoria = categoriaFiltro === 'Todas' || material.categoria === categoriaFiltro
+    const coincideDisponibilidad = !soloDisponibles || estaDisponible(material)
+
+    return coincideNombre && coincideCategoria && coincideDisponibilidad
+  })
+
   return (
     <div className="app">
       <Encabezado />
@@ -73,7 +97,16 @@ function App() {
 
         {/* Columna derecha: resumen, filtros y lista */}
         <div className="panel-principal">
-          <ListaMateriales materiales={materiales} />
+          <Filtros
+            busqueda={busqueda}
+            categoriaFiltro={categoriaFiltro}
+            soloDisponibles={soloDisponibles}
+            alCambiarBusqueda={setBusqueda}
+            alCambiarCategoria={setCategoriaFiltro}
+            alCambiarSoloDisponibles={setSoloDisponibles}
+            alLimpiar={manejarLimpiarFiltros}
+          />
+          <ListaMateriales materiales={materialesFiltrados} />
         </div>
       </main>
     </div>
