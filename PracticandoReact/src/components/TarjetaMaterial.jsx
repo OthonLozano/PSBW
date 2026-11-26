@@ -1,7 +1,7 @@
 import { estaDisponible } from '../utils/materiales.js'
 
-// Las props se reciben desestructuradas: { material, alVerDetalle }
-function TarjetaMaterial({ material, alVerDetalle }) {
+// Las props se reciben desestructuradas: { material, alVerDetalle, alCambiarReserva }
+function TarjetaMaterial({ material, alVerDetalle, alCambiarReserva }) {
   return (
     <article className="tarjeta">
       <h3>{material.nombre}</h3>
@@ -14,6 +14,9 @@ function TarjetaMaterial({ material, alVerDetalle }) {
       <div className="acciones">
         <button type="button" className="boton-secundario" onClick={() => alVerDetalle(material.id)}>
           Ver detalle
+        </button>
+        <button type="button" onClick={() => alCambiarReserva(material.id)}>
+          {estaDisponible(material) ? 'Reservar' : 'Liberar'}
         </button>
       </div>
     </article>

@@ -89,6 +89,19 @@ function App() {
     setIdSeleccionado(null)
   }
 
+  // Alterna entre reservado y disponible sin modificar el estado directamente:
+  // map crea un arreglo nuevo y el spread crea un objeto nuevo solo para el material que cambia.
+  const manejarCambioReserva = (id) => {
+    const materialesActualizados = materiales.map((material) => {
+      if (material.id === id) {
+        return { ...material, reservado: !material.reservado }
+      }
+      return material
+    })
+
+    setMateriales(materialesActualizados)
+  }
+
   // Resultados de los filtros. Se calculan en cada renderizado a partir del arreglo completo.
   // filter crea un arreglo nuevo, así que materiales nunca se modifica.
   const textoBusqueda = normalizarTexto(busqueda)
@@ -130,7 +143,11 @@ function App() {
             alCambiarSoloDisponibles={setSoloDisponibles}
             alLimpiar={manejarLimpiarFiltros}
           />
-          <ListaMateriales materiales={materialesFiltrados} alVerDetalle={manejarVerDetalle} />
+          <ListaMateriales
+            materiales={materialesFiltrados}
+            alVerDetalle={manejarVerDetalle}
+            alCambiarReserva={manejarCambioReserva}
+          />
         </div>
       </main>
     </div>
