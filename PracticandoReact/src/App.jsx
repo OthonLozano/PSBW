@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import DetalleMaterial from './components/DetalleMaterial.jsx' 
 import Encabezado from './components/Encabezado.jsx'
 import Filtros from './components/Filtros.jsx'
 import FormularioMaterial from './components/FormularioMaterial.jsx'
@@ -18,6 +19,9 @@ function App() {
   const [busqueda, setBusqueda] = useState('')
   const [categoriaFiltro, setCategoriaFiltro] = useState('Todas')
   const [soloDisponibles, setSoloDisponibles] = useState(false)
+
+  // id del material que se muestra en el detalle (null significa sin selección)
+  const [idSeleccionado, setIdSeleccionado] = useState(null)
 
   // Recibe los datos del formulario. Devuelve true si se registró y false si no.
   const manejarRegistro = (datos) => {
@@ -74,7 +78,18 @@ function App() {
     setCategoriaFiltro('Todas')
     setSoloDisponibles(false)
   }
-    // Resultados de los filtros. Se calculan en cada renderizado a partir del arreglo completo.
+
+  // Guarda el id del material que se quiere consultar
+  const manejarVerDetalle = (id) => {
+    setIdSeleccionado(id)
+  }
+
+  // quita la selección y el detalle regresa a su mensaje inicial
+  const manejarCerrarDetalle = () => {
+    setIdSeleccionado(null)
+  }
+
+  // Resultados de los filtros. Se calculan en cada renderizado a partir del arreglo completo.
   // filter crea un arreglo nuevo, así que materiales nunca se modifica.
   const textoBusqueda = normalizarTexto(busqueda)
 
@@ -86,6 +101,10 @@ function App() {
     return coincideNombre && coincideCategoria && coincideDisponibilidad
   })
 
+  // material del detalle. Se busca en el arreglo completo, no en el filtrado,
+  // para que el detalle siga visible aunque un filtro oculte su tarjeta.
+  const materialSeleccionado = materiales.find((material) => material.id === idSeleccionado)
+
   return (
     <div className="app">
       <Encabezado />
@@ -93,6 +112,11 @@ function App() {
         {/* Columna izquierda: registro y detalle */}
         <aside className="panel-lateral">
           <FormularioMaterial mensaje={mensaje} alRegistrar={manejarRegistro} />
+          <DetalleMaterial
+            idSeleccionado={idSeleccionado}
+            material={materialSeleccionado}
+            alCerrar={manejarCerrarDetalle}
+          />
         </aside>
 
         {/* Columna derecha: resumen, filtros y lista */}
@@ -106,7 +130,7 @@ function App() {
             alCambiarSoloDisponibles={setSoloDisponibles}
             alLimpiar={manejarLimpiarFiltros}
           />
-          <ListaMateriales materiales={materialesFiltrados} />
+          <ListaMateriales materiales={materialesFiltrados} alVerDetalle={manejarVerDetalle} />
         </div>
       </main>
     </div>

@@ -1,6 +1,6 @@
 import TarjetaMaterial from './TarjetaMaterial.jsx'
 
-function ListaMateriales({ materiales }) {
+function ListaMateriales({ materiales, alVerDetalle }) {
   return (
     <section className="seccion">
       <h2>Materiales</h2>
@@ -11,7 +11,11 @@ function ListaMateriales({ materiales }) {
       ) : (
         <div className="lista-tarjetas">
           {materiales.map((material) => (
-            <TarjetaMaterial key={material.id} material={material} />
+            <TarjetaMaterial
+              key={material.id}
+              material={material}
+              alVerDetalle={alVerDetalle}
+            />
           ))}
         </div>
       )}
