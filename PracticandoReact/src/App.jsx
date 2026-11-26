@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Resumen from './components/Resumen.jsx'
 import DetalleMaterial from './components/DetalleMaterial.jsx' 
 import Encabezado from './components/Encabezado.jsx'
@@ -9,9 +9,28 @@ import { materialesIniciales } from './data/materiales.js'
 import { describirMaterial, estaDisponible, normalizarTexto } from './utils/materiales.js'
 import './App.css'
 
+// Clave con la que se guardan los materiales en localStorage
+const CLAVE_ALMACENAMIENTO = 'segunda-vida-materiales'
+
+// Devuelve los materiales guardados o, si no hay nada guardado, los seis iniciales
+function cargarMateriales() {
+  const guardado = localStorage.getItem(CLAVE_ALMACENAMIENTO)
+
+  if (guardado === null) {
+    return materialesIniciales
+  }
+
+  try {
+    return JSON.parse(guardado)
+  } catch {
+    // Si el texto guardado está dañado y no se puede convertir, se usan los iniciales
+    return materialesIniciales
+  }
+}
+
 function App() {
   // Arreglo completo de materiales: es la única fuente de verdad de la aplicación
-  const [materiales, setMateriales] = useState(materialesIniciales)
+  const [materiales, setMateriales] = useState(cargarMateriales)
 
   // Mensaje del formulario: null, o un objeto { tipo: 'error' | 'exito', texto }
   const [mensaje, setMensaje] = useState(null)
@@ -23,6 +42,12 @@ function App() {
 
   // id del material que se muestra en el detalle (null significa sin selección)
   const [idSeleccionado, setIdSeleccionado] = useState(null)
+
+
+  // Cada vez que cambia el arreglo de materiales, se guarda en localStorage como texto JSON
+  useEffect(() => {
+    localStorage.setItem(CLAVE_ALMACENAMIENTO, JSON.stringify(materiales))
+  }, [materiales])
 
   // Recibe los datos del formulario. Devuelve true si se registró y false si no.
   const manejarRegistro = (datos) => {
@@ -103,6 +128,15 @@ function App() {
     setMateriales(materialesActualizados)
   }
 
+  // Regresa a los seis materiales originales y limpia la selección, los filtros y los mensajes.
+  // El useEffect guarda el nuevo arreglo, así que el resultado se conserva al recargar.
+  const manejarRestablecer = () => {
+    setMateriales(materialesIniciales)
+    setIdSeleccionado(null)
+    manejarLimpiarFiltros()
+    setMensaje(null)
+  }
+
   // Resultados de los filtros. Se calculan en cada renderizado a partir del arreglo completo.
   // filter crea un arreglo nuevo, así que materiales nunca se modifica.
   const textoBusqueda = normalizarTexto(busqueda)
@@ -131,6 +165,15 @@ function App() {
             material={materialSeleccionado}
             alCerrar={manejarCerrarDetalle}
           />
+          <section className="seccion">
+            <h2>Datos guardados</h2>
+            <p>Los materiales se guardan en este navegador y se recuperan al recargar la página.</p>
+            <div className="acciones">
+              <button type="button" className="boton-secundario" onClick={manejarRestablecer}>
+                Restablecer datos iniciales
+              </button>
+            </div>
+          </section>          
         </aside>
 
         {/* Columna derecha: resumen, filtros y lista */}
